@@ -1,70 +1,60 @@
-# Getting Started with Create React App
+# Core Assignment "Hook Form"
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is Christian Johnson's work for Coding Dojo's Part-Time Accelerated MERN Stack.
+It was submitted on April 11, 2023.
 
-## Available Scripts
+## Assignment description
 
-In the project directory, you can run:
+This is a basic React component that renders a form with input fields for first name, last name, email, password, and confirm password. The component uses the useState hook to manage state for each input field. As the user types into each input field, the corresponding state value is updated with the new value. The respective state values are displayed below the form with each trigger of React's `onChange` event handler.
 
-### `npm start`
+<hr>
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Additional Embeleshments
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+If an input field has no value, its corresponding list item is not rendered. My solution checks if an input field has a value and only displays its corresponding list item if it does. To achieve this, variables are created to display the label and respective `useState` variables in an `<li>` tag. If the length of the original `useState` variable is less than 1, the display variable is set to `null`.
 
-### `npm test`
+```
+  let firstNameDisplay;
+  if (firstName.length > 0) {
+    firstNameDisplay = <li> First Name: {firstName} </li>;
+  } else {
+    firstNameDisplay = null;
+  }
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+...and on through the lastName, email and password values.
 
-### `npm run build`
+The JSX in the `return` statement reads:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```<h2>Your form data</>
+    <ul>
+      {firstNameDisplay}
+      {lastNameDisplay}
+      {emailDisplay}
+      {password1Display}
+      {password2Display}
+    </ul>
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+There must be a way to simplify five separate declarations of display variables into one since they all followed the same logic. Being stumpped, a querry to chatGPT suggested the following helper function:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```const generateDisplayString = (label, value) => {
+    if (value.length > 0) {
+      return <li>{label}: {value}</li>;
+    } else {
+      return null;
+    }
+  }
+```
 
-### `npm run eject`
+and updating the unordered list to:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+```<h2>Your form data</h2>
+          <ul>
+            {generateDisplayString('First Name', firstName)}
+            {generateDisplayString('Last Name', lastName)}
+            {generateDisplayString('Email', email)}
+            {generateDisplayString('Password', password1)}
+            {generateDisplayString('Confirm Password', password2)}
+          </ul>
+```
